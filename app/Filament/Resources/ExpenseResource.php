@@ -17,7 +17,7 @@ class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
-    protected static ?string $navigationIcon = "heroicon-o-collection";
+    protected static ?string $navigationIcon = "heroicon-o-banknotes";
 
     public static function form(Form $form): Form
     {
@@ -61,6 +61,7 @@ class ExpenseResource extends Resource
                 ),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -79,6 +80,7 @@ class ExpenseResource extends Resource
         return [
             "index" => Pages\ListExpenses::route("/"),
             "create" => Pages\CreateExpense::route("/create"),
+            "view" => Pages\ViewExpense::route("/{record}"),
             "edit" => Pages\EditExpense::route("/{record}/edit"),
         ];
     }
