@@ -36,6 +36,15 @@ class ExpenseResource extends Resource
                 "tags",
                 "name"
             ),
+            Forms\Components\Section::make("Documents")
+                ->schema([
+                    Forms\Components\FileUpload::make("attachment")
+                        ->disk("s3")
+                        ->directory("expenses")
+                        ->visibility("private")
+                        ->enableDownload(),
+                ])
+                ->collapsible(),
         ]);
     }
 
