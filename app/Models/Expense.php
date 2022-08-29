@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ExpenseDeletedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,4 +15,13 @@ class Expense extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    /**
+     * The event map for the model
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        "deleting" => ExpenseDeletedEvent::class,
+    ];
 }
