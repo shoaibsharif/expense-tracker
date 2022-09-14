@@ -60,7 +60,7 @@ return [
     |
     */
 
-    "home_url" => "/",
+    "home_url" => "/admin",
 
     /*
     |--------------------------------------------------------------------------
@@ -278,6 +278,7 @@ return [
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
+            \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
