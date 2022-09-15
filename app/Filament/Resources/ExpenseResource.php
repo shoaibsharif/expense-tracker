@@ -63,6 +63,7 @@ class ExpenseResource extends Resource
                     ->money("usd", true)
                     ->alignRight(),
             ])
+            ->defaultSort("expense_date", "desc")
             ->filters([
                 Tables\Filters\MultiSelectFilter::make("tags")->relationship(
                     "tags",
