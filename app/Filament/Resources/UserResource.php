@@ -6,12 +6,14 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Password;
 
 class UserResource extends Resource
 {
@@ -54,11 +56,29 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->hidden(
-                    fn(User $user): bool => auth()
-                        ->user()
-                        ->can("delete", $user->id)
-                ),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(
+                        fn(User $user): bool => auth()
+                            ->user()
+                            ->can("delete", $user->id)
+                    )
+
+                    ->requiresConfirmation(),
+                Tables\Actions\Action::make("Reset Password")
+                    ->action(function (User $record) {
+                        $status = Password::sendResetLink([
+                            "email" => $record->email,
+                        ]);
+
+                        if ($status === Password::RESET_LINK_SENT) {
+                            Notification::make()
+                                ->title("Password reset link sent")
+                                ->icon("heroicon-o-check-circle")
+                                ->iconColor("success")
+                                ->send();
+                        }
+                    })
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }

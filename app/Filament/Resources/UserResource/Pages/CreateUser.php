@@ -17,9 +17,4 @@ class CreateUser extends CreateRecord
 
         return $data;
     }
-
-    protected function afterCreate(): void
-    {
-        dump($this->data);
-    }
 }
